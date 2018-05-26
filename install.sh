@@ -22,7 +22,7 @@ GREEN='\033[0;32m';
 BLUE='\033[0;34m';
 NC='\033[0m'; # No Color
 
-ver='0.0.0.0.1';
+ver='0.0.0.0.2';
 log='';
 update='';
 suflag='';
@@ -333,7 +333,7 @@ cat > /etc/init.d/vpnserver << EOF
 # Short-Description: Start daemon at boot time
 # Description:       Enable Softether by daemon.
 ### END INIT INFO
-DAEMON=$VPNSERVER_PATH
+DAEMON=vpnserver
 LOCK=/var/lock/subsys/vpnserver
 TAP_ADDR=$ROUTER_IP
 TAP_INTERFACE=$ROUTER_INTERFACE
