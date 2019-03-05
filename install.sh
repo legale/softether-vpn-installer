@@ -273,33 +273,33 @@ vpnserver start
 sleep 2
 
 #Отключаем все порты кроме 5555
+log "disable all vpnserver configuration interface ports except 5555"
 vpncmd localhost:5555 /SERVER /CMD ListenerDisable 443 > /dev/null 2>&1
 vpncmd localhost:5555 /SERVER /CMD ListenerDisable 992 > /dev/null 2>&1
 vpncmd localhost:5555 /SERVER /CMD ListenerDisable 1194 > /dev/null 2>&1
 
 # Отключение Keep Alive Internet Connection
+log "Disable keep alive signals"
 vpncmd localhost:5555 /SERVER /CMD KeepDisable  > /dev/null 2>&1
 
 # Выбор более устойчивого алгоримта шифрования чем установлен по умолчанию
+log "Set stronger encryption algo AES256-SHA"
 vpncmd localhost:5555 /SERVER /CMD ServerCipherSet AES256-SHA > /dev/null 2>&1
 
 # Удаляем стандартный хаб
+log "delete default Hub"
 vpncmd localhost:5555 /SERVER /CMD HubDelete DEFAULT > /dev/null 2>&1
 
 # Создание нового хаба и введение пароля хаба
 # Рекомендую на этом шаге пароль оставить пустой, 
 # чтобы не вводить его во всех слудующих комнадах
+log "create Hub $HUB with pass"
 vpncmd localhost:5555 /SERVER /CMD HubCreate $HUB /password:'' > /dev/null 2>&1
 
 # Создание группы пользователей 
+log "create group Users"
 vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD GroupCreate Users /REALNAME:Users /NOTE:none > /dev/null 2>&1
 
-# Создание пользователя в ново-созданной группе
-vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserCreate ru /GROUP:Users /REALNAME:"ru" /NOTE:none > /dev/null 2>&1
-
-# Задаем пароль
-log 'user password setup'
-vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserPasswordSet ru > /dev/null 2>&1
 
 # Отключение логгирования пакетов в данном хабе
 vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD LogDisable package > /dev/null 2>&1
@@ -314,10 +314,20 @@ vpncmd localhost:5555 /SERVER /CMD SstpEnable Disable > /dev/null 2>&1
 # creating bridge
 vpncmd localhost:5555 /SERVER /CMD BridgeCreate $HUB /DEVICE:$HUB /TAP:yes > /dev/null 2>&1
 
+# Создание пользователя в ново-созданной группе
+log "create user ru"
+vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserCreate ru /GROUP:Users /REALNAME:"ru" /NOTE:none > /dev/null 2>&1
+
+# Задаем пароль
+log "user password setup"
+vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserPasswordSet ru > /dev/null 2>&1
+
 # hub pass
+log "set Hub password"
 vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD SetHubPassword 
 
 # admin pass
+log "set vpnserver admin access password"
 vpncmd localhost:5555 /SERVER /CMD ServerPasswordSet 
 }
 
@@ -401,6 +411,11 @@ fi
 log "iptables -t nat -A POSTROUTING -s $NETWORK/24 -j SNAT --to-source $EXTERNAL_IP"
 iptables -t nat -A POSTROUTING -s $NETWORK/24 -j SNAT --to-source $EXTERNAL_IP > /dev/null 2>&1
 [[ $? == 0 ]] && log 'done' || exiterr 'failed'
+
+log "/etc/init.d/iptables-persistent save"
+/etc/init.d/iptables-persistent save > /dev/null 2>&1
+[[ $? == 0 ]] && log 'done' || exiterr 'failed'
+
 }
 
 sysctl_config() {
