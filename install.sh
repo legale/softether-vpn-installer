@@ -320,7 +320,7 @@ vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserCreate ru /GROUP:Users /REALNAM
 
 # Задаем пароль
 log "user password setup"
-vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserPasswordSet ru > /dev/null 2>&1
+vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserPasswordSet ru
 
 # hub pass
 log "set Hub password"
