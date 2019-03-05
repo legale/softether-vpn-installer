@@ -412,8 +412,12 @@ log "iptables -t nat -A POSTROUTING -s $NETWORK/24 -j SNAT --to-source $EXTERNAL
 iptables -t nat -A POSTROUTING -s $NETWORK/24 -j SNAT --to-source $EXTERNAL_IP > /dev/null 2>&1
 [[ $? == 0 ]] && log 'done' || exiterr 'failed'
 
-log "/etc/init.d/iptables-persistent save"
-/etc/init.d/iptables-persistent save > /dev/null 2>&1
+log "iptables-save >/etc/iptables/rules.v4"
+iptables-save >/etc/iptables/rules.v4
+[[ $? == 0 ]] && log 'done' || exiterr 'failed'
+
+log "iptables-save >/etc/iptables/rules.v6"
+ip6tables-save >/etc/iptables/rules.v6
 [[ $? == 0 ]] && log 'done' || exiterr 'failed'
 
 }
