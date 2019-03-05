@@ -297,6 +297,9 @@ vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD GroupCreate Users /REALNAME:Users /
 # Создание пользователя в ново-созданной группе
 vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserCreate ru /GROUP:Users /REALNAME:"ru" /NOTE:none > /dev/null 2>&1
 
+# Задаем пароль
+vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD UserPasswordSet ru > /dev/null 2>&1
+
 # Отключение логгирования пакетов в данном хабе
 vpncmd localhost:5555 /SERVER /HUB:$HUB /CMD LogDisable package > /dev/null 2>&1
 
