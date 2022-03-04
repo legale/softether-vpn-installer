@@ -384,10 +384,14 @@ dnsmasq_config() {
 log "dnsmasq config create for interface $ROUTER_INTERFACE"
 cat > /etc/dnsmasq.conf <<EOF
 # added by https://github.com/legale/softether-vpn-installer
-port=0
+port=53
+server = 8.8.8.8
+server = 8.8.4.4
+server = 1.1.1.1
 interface = $ROUTER_INTERFACE
 dhcp-range = $ROUTER_INTERFACE,192.168.168.10,192.168.168.254,3h
 dhcp-option = $ROUTER_INTERFACE,option:router,$ROUTER_IP
+dhcp-option = $ROUTER_INTERFACE,option:dns-server,$ROUTER_IP
 EOF
 service dnsmasq restart
 }
@@ -448,6 +452,8 @@ download_and_make
 install_vpn
 vpnserver_config
 init.d_config
+systemctl stop systemd-resolved
+systemctl disable systemd-resolved
 dnsmasq_config
 iptables_config
 sysctl_config
