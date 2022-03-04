@@ -151,8 +151,8 @@ download_and_make() {
 	# Скачивание репозитория Stable версии
 	cd /tmp
 	if [[ ! -e '/tmp/SoftEtherVPN_Stable' ]]; then
-		log 'git clone --depth=0 https://github.com/SoftEtherVPN/SoftEtherVPN_Stable.git'
-		git clone https://github.com/SoftEtherVPN/SoftEtherVPN_Stable.git > /dev/null 2>&1
+		log 'git clone --depth=1 https://github.com/SoftEtherVPN/SoftEtherVPN_Stable.git'
+		git clone --depth=1 https://github.com/SoftEtherVPN/SoftEtherVPN_Stable.git > /dev/null 2>&1
 		[[ $? == 0 ]] && log 'done' || exiterr 'failed'
 	else
 		log '/tmp/SoftEtherVPN_Stable is exists. Download skipped.';
