@@ -272,6 +272,10 @@ vpnserver start
 [[ $? == 0 ]] && log 'done' || exiterr 'failed'
 sleep 2
 
+#отключяем vpn over dns оставляем только icmp
+log "disable vpn over dns, enable vpn over icmp"
+vpncmd localhost:5555 /SERVER /CMD VpnOverIcmpDnsEnable /ICMP:yes /DNS:no
+
 #Отключаем все порты кроме 5555
 log "disable all vpnserver configuration interface ports except 5555"
 vpncmd localhost:5555 /SERVER /CMD ListenerDisable 443 > /dev/null 2>&1
