@@ -74,7 +74,7 @@ get_external_ip() {
 		echo "$INTERFACE" | grep -i 'tap_'
 		if [[ $? != 0 ]]; then
 			log "i think i got you $INTERFACE"
-			EXTERNAL_IP=$(ip addr show dev $INTERFACE | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*')
+			EXTERNAL_IP=$(ip addr show dev $INTERFACE | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*.*' | grep -v 'brd' | grep -Eo '([0-9]*\.){3}[0-9]*')
 			[[ -n $EXTERNAL_IP ]] && log "external ip address is: $EXTERNAL_IP" || exiterr "unable to get external ip address"
 			break
 		fi
