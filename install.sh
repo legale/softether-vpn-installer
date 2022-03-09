@@ -107,7 +107,7 @@ welcome(){
 }
 
 apt_update() {
-	log 'apt-get update && apt-get update && apt-get upgrade -y'
+	log 'apt-get update && apt-get upgrade -y'
 	apt-get update && apt-get upgrade -y > /dev/null 2>&1
 	[[ $? == 0 ]] && log 'done' || exiterr 'failed'
 }
