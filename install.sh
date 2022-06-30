@@ -174,7 +174,7 @@ download_and_make() {
 	sed -i 's%\(^INSTALL_VPNBRIDGE_DIR=\).*$%\1/opt/vpnserver/%' Makefile > /dev/null 2>&1
 	sed -i 's%\(^INSTALL_VPNCLIENT_DIR=\).*$%\1/opt/vpnserver/%' Makefile > /dev/null 2>&1
 	sed -i 's%\(^INSTALL_VPNCMD_DIR=\).*$%\1/opt/vpnserver/%' Makefile > /dev/null 2>&1
-	sed -i 's%-O\d%-O4%' Makefile > /dev/null 2>&1
+	sed -i 's%-O[[:digit:]]%-O3%g' Makefile > /dev/null 2>&1
 	[[ $? == 0 ]] && log 'done' || exiterr 'failed'
 	
 }
