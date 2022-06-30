@@ -372,7 +372,7 @@ restart)
 sleep 3
 \$DAEMON start
 sleep 1
-/sbin/ip address add \$TAP_ADDR/24 dev \$TAP_INTERFACE 
+/etc/init.d/dnsmasq restart
 ;;
 *)
 echo "Usage: \$0 {start|stop|restart}"
@@ -380,8 +380,8 @@ exit 1
 esac
 exit 0
 EOF
-log "update-rc.d vpnserver defaults"
-update-rc.d vpnserver defaults
+log "update-rc.d vpnserver defaults 90"
+update-rc.d vpnserver defaults 90
 }
 
 dnsmasq_config() {
@@ -390,14 +390,14 @@ cat > /etc/dnsmasq.conf <<EOF
 # added by https://github.com/legale/softether-vpn-installer
 port=53
 server = 8.8.8.8
-server = 8.8.4.4
-server = 1.1.1.1
+# server = 8.8.4.4
+# server = 1.1.1.1
 interface = $ROUTER_INTERFACE
 dhcp-range = $ROUTER_INTERFACE,10.10.10.10,10.10.10.254,3h
 dhcp-option = $ROUTER_INTERFACE,option:router,$ROUTER_IP
 dhcp-option = $ROUTER_INTERFACE,option:dns-server,$ROUTER_IP
 EOF
-service dnsmasq restart
+/etc/init.d/dnsmasq restart
 }
 
 iptables_config() {
