@@ -31,8 +31,8 @@ SCRIPTPATH=`dirname $SCRIPT`
 logfile="$SCRIPTPATH/install.log";
 
 HUB='vpn'
-ROUTER_IP='192.168.168.1'
-NETWORK='192.168.168.0'
+ROUTER_IP='10.10.10.1'
+NETWORK='10.10.10.0'
 ROUTER_INTERFACE="tap_$HUB"
 
 #secondary functions
@@ -393,7 +393,7 @@ server = 8.8.8.8
 server = 8.8.4.4
 server = 1.1.1.1
 interface = $ROUTER_INTERFACE
-dhcp-range = $ROUTER_INTERFACE,192.168.168.10,192.168.168.254,3h
+dhcp-range = $ROUTER_INTERFACE,10.10.10.10,10.10.10.254,3h
 dhcp-option = $ROUTER_INTERFACE,option:router,$ROUTER_IP
 dhcp-option = $ROUTER_INTERFACE,option:dns-server,$ROUTER_IP
 EOF
